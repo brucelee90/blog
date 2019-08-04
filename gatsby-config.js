@@ -15,13 +15,20 @@ module.exports = {
         // The protocol. This can be http or https.
         protocol: 'https',
         // Use 'Advanced Custom Fields' Wordpress plugin
-        useACF: false,
+        useACF: true,
         auth: {},
         // Set to true to debug endpoints on 'gatsby build'
         verboseOutput: false,
       },
     },
-    'gatsby-plugin-sharp',
+    {
+      resolve: `gatsby-plugin-sharp`,
+      options: {
+        useMozJpeg: true,
+        stripMetadata: true,
+        defaultQuality: 90,
+      },
+    },
     'gatsby-transformer-sharp',
     {
       // Removes unused css rules
@@ -33,6 +40,7 @@ module.exports = {
         purgeOnly: ['/all.sass'],
       },
     }, // must be after other CSS plugins
+    'gatsby-plugin-styled-components',
     'gatsby-plugin-netlify', // make sure to keep it last in the array
   ],
 }

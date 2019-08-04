@@ -12,6 +12,8 @@ export const BlogPostTemplate = ({
   date,
   author,
 }) => {
+  // console.log(tags);
+  
   return (
     <section className="section">
       <div className="container content">
@@ -23,7 +25,7 @@ export const BlogPostTemplate = ({
             <div dangerouslySetInnerHTML={{ __html: content }} />
             <div style={{ marginTop: `4rem` }}>
               <p>
-                {date} - posted by{' '}
+                {date}- posted by{' '}
                 <Link to={`/author/${author.slug}`}>{author.name}</Link>
               </p>
               {categories && categories.length ? (
@@ -78,6 +80,7 @@ const BlogPost = ({ data }) => {
         title={post.title}
         date={post.date}
         author={post.author}
+        acf={post.acf}
       />
     </Layout>
   )

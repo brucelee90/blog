@@ -1,47 +1,39 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link, graphql } from 'gatsby'
+import PostCard from './PostCard'
+import styled from 'styled-components'
 
 export default class IndexPage extends React.Component {
   render() {
     const { posts, title } = this.props
+    // console.log(this.props)
 
     return (
       <section className="section">
         <div className="container">
+
           <div className="content">
             <h1 className="has-text-weight-bold is-size-2">{title}</h1>
           </div>
-          {posts.map(({ node: post }) => (
-            <div
-              className="content"
-              style={{ border: '1px solid #eaecee', padding: '2em 4em' }}
-              key={post.id}
-            >
-              <p>
-                <Link className="has-text-primary" to={post.slug}>
-                  {post.title}
-                </Link>
-                <span> &bull; </span>
-                <small>
-                  {post.date} - posted by{' '}
-                  <Link to={`/author/${post.author.slug}`}>
-                    {post.author.name}
-                  </Link>
-                </small>
-              </p>
-              <div>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: post.excerpt.replace(/<p class="link-more.*/, ''),
-                  }}
+          <PostWrapper>
+            {/* Alle Daten werden an PostCard übergeben, um dort besser stylen zu können! */}
+            {posts.map(({ node: post }) => (
+              <div className="masonry-item" key={post.id}>
+                <PostCard
+                  title={post.title}
+                  linkToPost={post.slug}
+                  thumbnail={
+                    post.acf.thumbnailthumbnail.localFile.childImageSharp.fluid
+                  }
+                  htmlText={post.excerpt.replace(/<p class="link-more.*/, '')}
+                  datePosted={post.date}
+                  postAuthor={`/author/${post.author.slug}`}
+                  tags={post.tags}
                 />
-                <Link className="button is-small" to={post.slug}>
-                  Keep Reading →
-                </Link>
               </div>
-            </div>
-          ))}
+            ))}
+          </PostWrapper>
         </div>
       </section>
     )
@@ -55,6 +47,18 @@ IndexPage.propTypes = {
 
 export const pageQuery = graphql`
   fragment PostListFields on wordpress__POST {
+    acf {
+      thumbnailthumbnail {
+        source_url
+        localFile {
+          childImageSharp {
+            fluid(maxWidth: 1000) {
+              ...GatsbyImageSharpFluid_tracedSVG
+            }
+          }
+        }
+      }
+    }
     id
     title
     excerpt
@@ -67,5 +71,16 @@ export const pageQuery = graphql`
     }
     date(formatString: "MMMM DD, YYYY")
     slug
+    tags{
+      name
+      slug
+    }
   }
+`
+const PostWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 20px;
+  grid-auto-rows: minmax(180px, auto);
+  grid-auto-flow: dense;
 `

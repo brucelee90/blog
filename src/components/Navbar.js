@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, StaticQuery, graphql } from 'gatsby'
-import github from '../img/github-icon.svg'
+import styled from 'styled-components'
+import { colors } from './utils/styles'
 import logo from '../img/logo.svg'
 
 const Navbar = () => (
@@ -21,13 +22,17 @@ const Navbar = () => (
       <nav className="navbar is-transparent">
         <div className="container">
           <div className="navbar-brand">
-            <Link to="/" className="navbar-item">
+            <a href='https://leeklopfers.de' target="_blank" rel='noopener noreferrer' className="navbar-item">
               <figure className="image">
-                <img src={logo} alt="Kaldi" style={{ width: '88px' }} />
+                <img src={logo} alt="Lee" style={{ width: '88px' }} />
               </figure>
-            </Link>
+            </a>
           </div>
-          <div className="navbar-start">
+          <Link to="/" className="navbar-item">
+            <LinkWrapper>Blog</LinkWrapper>
+          </Link>
+        </div>
+        {/* <div className="navbar-start">
             {data.allWordpressPage.edges.map(edge => (
               <Link
                 className="navbar-item"
@@ -37,23 +42,18 @@ const Navbar = () => (
                 {edge.node.title}
               </Link>
             ))}
-          </div>
-          <div className="navbar-end">
-            <a
-              className="navbar-item"
-              href="https://github.com/GatsbyCentral/gatsby-starter-wordpress"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="icon">
-                <img src={github} alt="Github" />
-              </span>
-            </a>
-          </div>
-        </div>
+          </div> 
+        </div>*/}
       </nav>
     )}
   />
 )
 
 export default Navbar
+
+const LinkWrapper = styled.div`
+color: ${colors.mainBlack};
+    &:hover {
+      color: ${colors.primaryColor};
+    }
+`
