@@ -61,7 +61,7 @@ export const transObject = ({
 
 export const transition = ({
   property = 'all',
-  time = '0.5s',
+  time = '0.2s',
   type = 'ease-in-out',
 }) => {
   return `${property} ${time} ${type}`

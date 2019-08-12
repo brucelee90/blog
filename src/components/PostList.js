@@ -7,35 +7,36 @@ import styled from 'styled-components'
 export default class IndexPage extends React.Component {
   render() {
     const { posts, title } = this.props
-    // console.log(this.props)
 
     return (
-      <section className="section">
-        <div className="container">
-
-          <div className="content">
-            <h1 className="has-text-weight-bold is-size-2">{title}</h1>
+      <Section>
+        <section className="section">
+          <div className="container">
+            <div className="content">
+              <h1 className="has-text-weight-bold is-size-2">{title}</h1>
+            </div>
+            <PostWrapper>
+              {/* Alle Daten werden an PostCard übergeben, um dort besser stylen zu können! */}
+              {posts.map(({ node: post }) => (
+                <div className="masonry-item" key={post.id}>
+                  <PostCard
+                    title={post.title}
+                    linkToPost={post.slug}
+                    thumbnail={
+                      post.acf.thumbnailthumbnail.localFile.childImageSharp
+                        .fluid
+                    }
+                    htmlText={post.excerpt.replace(/<p class="link-more.*/, '')}
+                    datePosted={post.date}
+                    postAuthor={`/author/${post.author.slug}`}
+                    tags={post.tags}
+                  />
+                </div>
+              ))}
+            </PostWrapper>
           </div>
-          <PostWrapper>
-            {/* Alle Daten werden an PostCard übergeben, um dort besser stylen zu können! */}
-            {posts.map(({ node: post }) => (
-              <div className="masonry-item" key={post.id}>
-                <PostCard
-                  title={post.title}
-                  linkToPost={post.slug}
-                  thumbnail={
-                    post.acf.thumbnailthumbnail.localFile.childImageSharp.fluid
-                  }
-                  htmlText={post.excerpt.replace(/<p class="link-more.*/, '')}
-                  datePosted={post.date}
-                  postAuthor={`/author/${post.author.slug}`}
-                  tags={post.tags}
-                />
-              </div>
-            ))}
-          </PostWrapper>
-        </div>
-      </section>
+        </section>
+      </Section>
     )
   }
 }
@@ -69,9 +70,9 @@ export const pageQuery = graphql`
         wordpress_48
       }
     }
-    date(formatString: "MMMM DD, YYYY")
+    date(formatString: "DD.MM.YYYY")
     slug
-    tags{
+    tags {
       name
       slug
     }
@@ -83,4 +84,8 @@ const PostWrapper = styled.div`
   grid-gap: 20px;
   grid-auto-rows: minmax(180px, auto);
   grid-auto-flow: dense;
+`
+
+const Section = styled.section`
+  background: #fafafa;
 `

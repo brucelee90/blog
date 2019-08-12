@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, graphql } from 'gatsby'
 import Img from 'gatsby-image'
 import styled from 'styled-components'
-import { colors } from './utils/styles'
+import { colors, transition } from './utils/styles'
 
 export default function PostCard(data) {
   // Alle Props kommen aus PostList.js
@@ -26,56 +26,75 @@ export default function PostCard(data) {
     return x[0]
   }
 
-  // console.log(tags)
+  const lastComma = (item, i) => {
+    if (item.length === i+1) {
+      console.log('last');
+    }else{
+      console.log('not last');
+      return ', '
+    }
+  }
 
   return (
     <PostCardWrapper>
-      <Link to={linkToPost}>
-        <div>
-          <Img
-            className="post-image"
-            fluid={thumbnail}
-            style={{
-              borderRadius: '5px',
-            }}
-          />
+      <Img className="post-image" fluid={thumbnail} />
+      <section>
+        <div className="post-date">
+          <small>{datePosted}</small>
+        </div>
+        <Link to={linkToPost}>
           <div className="post-header">{title}</div>
-        </div>
-      </Link>
+        </Link>
 
-      <div
-        className="post-text"
-        dangerouslySetInnerHTML={{
-          __html: readMoreText(htmlText),
-          // __html: htmlText,
-        }}
-      />
-      <Link className="read-more" to={linkToPost}>
-        ... mehr lesen
-      </Link>
+        <div
+          className="post-text"
+          dangerouslySetInnerHTML={{
+            __html: readMoreText(htmlText),
+            // __html: htmlText,
+          }}
+        />
+        <Link className="read-more" to={linkToPost}>
+          ...mehr lesen
+        </Link>
+      </section>
+      <div>
+        <hr />
+      </div>
 
-      <div className="post-date">
-        <small>- {datePosted}</small>
-      </div>
-      <div className="tag-section">
-        <div className='tags'>Tags:</div>
-        <div>
-          <ul className="post-tags">
-            {tags.map(tag => (
-              <li key={`${tag.slug}tag`}>
-                <Link className="post-tag" to={`/tags/${tag.slug}/`}>
-                  {tag.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+      <section>
+        <ul className="post-tags">
+          {tags.map((tag, i) => (
+            <li key={`${tag.slug}tag`}>
+              <Link className="post-tag" to={`/tags/${tag.slug}/`}>
+                {tag.name.toUpperCase()}
+                {lastComma(tags, i)}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
     </PostCardWrapper>
   )
 }
 
 const PostCardWrapper = styled.div`
+
+  background: #ffffff;
+  -webkit-box-shadow: 0px 0px 30px 0px rgba(204,204,204,1);
+  -moz-box-shadow: 0px 0px 30px 0px rgba(204,204,204,1);
+  box-shadow: 0px 0px 30px 0px rgba(204,204,204,1);
+  transition: ${transition};
+  &:hover{
+    transition: ${transition};
+    -webkit-box-shadow: 0px 0px 2px 0px rgba(204,204,204,1);
+    -moz-box-shadow: 0px 0px 2px 0px rgba(204,204,204,1);
+    box-shadow: 0px 0px 2px 0px rgba(204,204,204,1);
+  }
+
+  section {
+    padding: .7rem 1.5rem;
+  }
+
   .post-text {
     margin-top: 0.3rem;
     font-weight: 400;
@@ -83,33 +102,34 @@ const PostCardWrapper = styled.div`
   }
 
   .post-header {
-    margin-top: 0.5rem;
+    margin: 1.1rem 0;
     font-weight: bold;
-    font-size: 1.4em;
+    font-size: 1.8em;
     color: ${colors.mainBlack};
-  }
-
-  .post-image {
-    -webkit-box-shadow: 0px 6px 19px -7px rgba(0, 0, 0, 0.45);
-    -moz-box-shadow: 0px 6px 19px -7px rgba(0, 0, 0, 0.45);
-    box-shadow: 0px 6px 19px -7px rgba(0, 0, 0, 0.45);
+    transition: ${transition};
+    &:hover {
+      color: ${colors.orange};
+      transition: ${transition};
+    }
   }
 
   .post-date {
-    text-align: right;
+    text-align: left;
     color: #aaaaaa;
   }
   .read-more {
-    color: ${colors.mainBlack};
+    color: black;
+    transition: ${transition};
     &:hover {
+      transition: ${transition};
       color: ${colors.primaryColor};
     }
   }
 
-  .tags{
+  .tags {
     display: inline;
     float: left;
-    margin-right: .5rem;
+    margin-right: 0.5rem;
   }
 
   .post-tags {
@@ -117,57 +137,26 @@ const PostCardWrapper = styled.div`
     margin: 0;
     overflow: hidden;
     padding: 0;
-    display: inline;
-    float: left;
   }
 
   .post-tags li {
     float: left;
   }
 
+  hr{
+    border: .5px solid #eee;
+    /* width: 75%; */
+    margin: 0;
+    }
+
   .post-tag {
-    background: #eee;
-    border-radius: 3px 0 0 3px;
-    color: #474747;
-    display: inline-block;
-    height: 26px;
-    line-height: 26px;
-    padding: 0 20px 0 23px;
-    position: relative;
-    margin: 0 10px 10px 0;
-    text-decoration: none;
-    -webkit-transition: color 0.1s;
-  }
-
-  .post-tag::before {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
-    content: '';
-    height: 6px;
-    left: 10px;
-    position: absolute;
-    width: 6px;
-    top: 10px;
-  }
-
-  .post-tag::after {
-    background: #fff;
-    border-bottom: 13px solid transparent;
-    border-left: 10px solid #eee;
-    border-top: 13px solid transparent;
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-
-  .post-tag:hover {
-    background-color: ${colors.primaryColor};
-    color: white;
-  }
-
-  .post-tag:hover::after {
-    border-left-color: ${colors.primaryColor};
+    font-size: .9rem;
+    color: #969696;
+    margin-right: .3em;
+    transition: ${transition};
+    &:hover{
+      color: #000000;
+      transition: ${transition};
+    }
   }
 `
