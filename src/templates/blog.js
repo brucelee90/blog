@@ -14,7 +14,7 @@ export default class IndexPage extends React.Component {
     return (
       <Layout>
         <Hero />
-        <PostList posts={posts} title="Latest posts" />
+        <PostList posts={posts} title="Neueste Posts" />
         <Pagination pageContext={pageContext} pathPrefix="/" />
       </Layout>
     )

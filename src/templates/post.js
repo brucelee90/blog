@@ -28,9 +28,9 @@ export const BlogPostTemplate = ({
 
   const lastComma = (item, i) => {
     if (item.length === i + 1) {
-      console.log('last')
+      console.log()
     } else {
-      console.log('not last')
+      console.log()
       return ', '
     }
   }

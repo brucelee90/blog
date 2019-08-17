@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { colors, textMonoSpace, transition } from './utils/styles'
 import logo from '../img/logo.svg'
 import { FaLinkedin, FaGithub, FaCaretDown } from 'react-icons/fa'
+import CategoryDropDown from '../components/CategoryDropDown'
 
 const Navbar = () => (
   <StaticQuery
@@ -22,19 +23,21 @@ const Navbar = () => (
     render={data => (
       <NavWrapper>
         <div className="nav-logo">
-          <Link style={{ textDecoration: 'none' }} to="/">
+          <a href="https://leeklopfers.de">
             <div className="logo">
               <span style={{ color: 'black' }}>&#60;</span>
               LeeKlopfers
               <span style={{ color: 'black' }}>&#47;&#62;</span>
             </div>
-          </Link>
+          </a>
         </div>
         <div className="dropdown">
-          Blog <FaCaretDown />
+          <Link style={{ textDecoration: 'none' }} to="/">Home</Link>
+        </div>
+        <div className="dropdown">
+          Kategorien <FaCaretDown />
           <div className="dropdown-content">
-            <div className="dropdown-item" >Post1</div>
-            <div className="dropdown-item" >Post2</div>
+            <CategoryDropDown />
           </div>
         </div>
         <div className="nav-social">
@@ -54,6 +57,10 @@ export default Navbar
 
 const NavWrapper = styled.nav`
   padding: 1.2rem;
+
+  a{
+    color: black;
+  }
 
   .logo {
     color: ${colors.primaryColor};
@@ -82,7 +89,7 @@ const NavWrapper = styled.nav`
       background-color: #e0e0e0e0;
       min-width: 8rem;
       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      padding: .5rem;
+      padding: .3rem;
       z-index: 1;
 
       .dropdown-item{

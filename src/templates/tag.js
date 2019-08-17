@@ -9,9 +9,9 @@ const Tag = props => {
   const { edges: posts, totalCount } = data.allWordpressPost
   const { title: siteTitle } = data.site.siteMetadata
   const { name: tag } = pageContext
-  const title = `${totalCount} post${
+  const title = `${totalCount} Post${
     totalCount === 1 ? '' : 's'
-  } with the tag ${tag}`
+  } mit dem Tag "${tag}"`
 
   return (
     <Layout>

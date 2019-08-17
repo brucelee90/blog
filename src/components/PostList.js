@@ -7,6 +7,8 @@ import styled from 'styled-components'
 export default class IndexPage extends React.Component {
   render() {
     const { posts, title } = this.props
+    console.log(this.props);
+    
 
     return (
       <Section>

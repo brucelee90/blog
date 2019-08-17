@@ -3,15 +3,19 @@ import Helmet from 'react-helmet'
 import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import PostList from '../components/PostList'
+import CategoryDropDown from '../components/CategoryDropDown'
 
 const Category = props => {
   const { data, pageContext } = props
   const { edges: posts, totalCount } = data.allWordpressPost
   const { title: siteTitle } = data.site.siteMetadata
   const { name: category } = pageContext
-  const title = `${totalCount} post${
+  const title = `${totalCount} Post${
     totalCount === 1 ? '' : 's'
-  } in the “${category}” category`
+  } mit der Kategorie “${category}”`
+
+  console.log(pageContext);
+  
 
   return (
     <Layout>
